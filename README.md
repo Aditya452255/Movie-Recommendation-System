@@ -71,8 +71,33 @@ By default, `app.py` points `API_BASE` to a deployed backend. To use your local 
 - `GET /movie/search?query=...&tfidf_top_n=12&genre_limit=12` — Bundle: details + TF‑IDF + genre
 
 ## Deploying
-- Backend can be hosted on any ASGI-compatible service (e.g., Render, Railway, Fly.io). Ensure `.env` includes `TMDB_API_KEY` and the TF‑IDF pickles are available at runtime.
-- Frontend (Streamlit) can run on Streamlit Community Cloud or the same VM/container as the API. Update `API_BASE` in `app.py` to point to your backend URL.
+
+### Deploy Backend to Vercel
+1. Install Vercel CLI:
+```bash
+npm install -g vercel
+```
+
+2. Set environment variable on Vercel dashboard:
+   - Go to your project settings
+   - Add `TMDB_API_KEY` with your TMDB API key
+
+3. Deploy:
+```bash
+vercel
+```
+
+**Note:** Pickle files (`.pkl`) are included in the repo. If they're too large, consider using Vercel's blob storage or regenerating them on deployment.
+
+### Deploy Frontend to Streamlit Cloud
+1. Push your code to GitHub (already done)
+2. Go to [share.streamlit.io](https://share.streamlit.io)
+3. Deploy `app.py`
+4. Update `API_BASE` in `app.py` to your Vercel backend URL
+
+### Alternative: Render
+- Backend can be hosted on Render, Railway, or Fly.io
+- Ensure `.env` includes `TMDB_API_KEY` and the TF‑IDF pickles are available at runtime
 
 ## Contributing
 Feel free to open issues and PRs. For local development, keep changes focused and ensure the API still boots and the Streamlit app renders without errors.

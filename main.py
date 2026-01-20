@@ -284,28 +284,39 @@ async def attach_tmdb_card_by_title(title: str) -> Optional[TMDBMovieCard]:
 def load_pickles():
     global df, indices_obj, tfidf_matrix, tfidf_obj, TITLE_TO_IDX
 
-    # Load df
-    with open(DF_PATH, "rb") as f:
-        df = pickle.load(f)
+    try:
+        # Import numpy first to ensure it's loaded
+        import numpy as np
+        import scipy.sparse
+        
+        # Load df
+        with open(DF_PATH, "rb") as f:
+            df = pickle.load(f)
 
-    # Load indices
-    with open(INDICES_PATH, "rb") as f:
-        indices_obj = pickle.load(f)
+        # Load indices
+        with open(INDICES_PATH, "rb") as f:
+            indices_obj = pickle.load(f)
 
-    # Load TF-IDF matrix (usually scipy sparse)
-    with open(TFIDF_MATRIX_PATH, "rb") as f:
-        tfidf_matrix = pickle.load(f)
+        # Load TF-IDF matrix (usually scipy sparse)
+        with open(TFIDF_MATRIX_PATH, "rb") as f:
+            tfidf_matrix = pickle.load(f)
 
-    # Load tfidf vectorizer (optional, not used directly here)
-    with open(TFIDF_PATH, "rb") as f:
-        tfidf_obj = pickle.load(f)
+        # Load tfidf vectorizer (optional, not used directly here)
+        with open(TFIDF_PATH, "rb") as f:
+            tfidf_obj = pickle.load(f)
 
-    # Build normalized map
-    TITLE_TO_IDX = build_title_to_idx_map(indices_obj)
+        # Build normalized map
+        TITLE_TO_IDX = build_title_to_idx_map(indices_obj)
 
-    # sanity
-    if df is None or "title" not in df.columns:
-        raise RuntimeError("df.pkl must contain a DataFrame with a 'title' column")
+        # sanity
+        if df is None or "title" not in df.columns:
+            raise RuntimeError("df.pkl must contain a DataFrame with a 'title' column")
+    except FileNotFoundError as e:
+        print(f"Warning: Pickle file not found: {e}")
+        print("TF-IDF recommendations will be disabled")
+    except Exception as e:
+        print(f"Warning: Failed to load pickles: {e}")
+        print("TF-IDF recommendations will be disabled")
 
 
 # =========================
