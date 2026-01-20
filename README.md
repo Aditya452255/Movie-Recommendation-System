@@ -78,4 +78,4 @@ By default, `app.py` points `API_BASE` to a deployed backend. To use your local 
 Feel free to open issues and PRs. For local development, keep changes focused and ensure the API still boots and the Streamlit app renders without errors.
 
 ## License
-MIT (or your preferred license).
+Aditya Jain
