@@ -5,6 +5,7 @@ from typing import Optional, List, Dict, Any, Tuple
 import numpy as np
 import pandas as pd
 import httpx
+import streamlit as st
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -15,14 +16,17 @@ from dotenv import load_dotenv
 # ENV
 # =========================
 load_dotenv()
-TMDB_API_KEY = os.getenv("TMDB_API_KEY")
+try:
+    TMDB_API_KEY = st.secrets["TMDB_API_KEY"]
+except (FileNotFoundError, KeyError):
+    TMDB_API_KEY = os.getenv("TMDB_API_KEY")
 
 TMDB_BASE = "https://api.themoviedb.org/3"
 TMDB_IMG_500 = "https://image.tmdb.org/t/p/w500"
 
 if not TMDB_API_KEY:
-    # Don't crash import-time in production if you prefer; but for you better fail early:
-    raise RuntimeError("TMDB_API_KEY missing. Put it in .env as TMDB_API_KEY=xxxx")
+    import warnings
+    warnings.warn("TMDB_API_KEY not found. Set it in .streamlit/secrets.toml or .env file")
 
 
 # =========================
