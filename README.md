@@ -2,6 +2,8 @@
 
 An end-to-end movie recommendation app with a Streamlit UI and a FastAPI backend. It combines TMDB-powered search/details with local TF‑IDF similarity to suggest similar titles, plus genre-based recommendations.
 
+## Deployed link 
+https://movie-recommendation-system-eatcoymkh3lfjjt6tmjf9s.streamlit.app/
 ## Features
 - Search with live suggestions (TMDB keyword search)
 - Movie details: poster, overview, release date, genres
