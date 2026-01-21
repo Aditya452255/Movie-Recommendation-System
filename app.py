@@ -6,7 +6,6 @@ import streamlit as st
 # =============================
 API_BASE = "https://movie-recommendation-system-s1hg.onrender.com" or "http://127.0.0.1:8000"
 TMDB_IMG = "https://image.tmdb.org/t/p/w500"
-TMDB_API_KEY = st.secrets.get("TMDB_API_KEY", "")
 
 st.set_page_config(page_title="Movie Recommender", page_icon="🎬", layout="wide")
 
