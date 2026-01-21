@@ -1,0 +1,11 @@
+[client]
+showErrorDetails = true
+showWarningOnDirectExecution = true
+
+[server]
+headless = true
+port = 8501
+runOnSave = true
+
+[logger]
+level = "info"
