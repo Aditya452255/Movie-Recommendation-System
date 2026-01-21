@@ -5,20 +5,18 @@ from typing import Optional, List, Dict, Any, Tuple
 import numpy as np
 import pandas as pd
 import httpx
-import streamlit as st
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from dotenv import load_dotenv
 
-
-# =========================
-# ENV
-# =========================
-load_dotenv()
 try:
-    TMDB_API_KEY = st.secrets["TMDB_API_KEY"]
-except (FileNotFoundError, KeyError):
+    import streamlit as st
+    TMDB_API_KEY = st.secrets.get("TMDB_API_KEY", "")
+except (ImportError, RuntimeError):
+    # Not running in Streamlit context
+    st = None
+    load_dotenv()
     TMDB_API_KEY = os.getenv("TMDB_API_KEY")
 
 TMDB_BASE = "https://api.themoviedb.org/3"
@@ -41,6 +39,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Load pickles when FastAPI app starts
+@app.on_event("startup")
+async def startup_event():
+    load_pickles()
 
 
 # =========================
@@ -284,8 +287,8 @@ async def attach_tmdb_card_by_title(title: str) -> Optional[TMDBMovieCard]:
 # =========================
 # STARTUP: LOAD PICKLES
 # =========================
-@app.on_event("startup")
 def load_pickles():
+    """Load pickle files for TF-IDF recommendations. Call explicitly from API or Streamlit."""
     global df, indices_obj, tfidf_matrix, tfidf_obj, TITLE_TO_IDX
 
     try:

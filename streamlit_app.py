@@ -1,8 +1,11 @@
-import streamlit as st
+"""
+Streamlit Cloud entry point.
+Simply runs app.py which is the Streamlit frontend.
+"""
+import subprocess
+import sys
 
-# This file allows Streamlit Cloud to auto-detect the app
-# Import and run the main app
+# Run app.py as the Streamlit app
 if __name__ == "__main__":
-    import sys
-    # Import app.py which is the Streamlit frontend
     exec(open("app.py").read())
+
